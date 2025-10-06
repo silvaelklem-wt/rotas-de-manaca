@@ -1,0 +1,58 @@
+<div class="container">
+  <h1>🏨 Nossos Hotéis</h1>
+  
+  <div class="status-bar">
+    <button (click)="recarregar()" class="btn-reload">🔄 Atualizar</button>
+    <span class="hotel-count">{{ hoteis.length }} hotéis encontrados</span>
+  </div>
+  
+  <div *ngIf="carregando" class="loading">
+    <div class="spinner"></div>
+    <p>Carregando hotéis...</p>
+  </div>
+
+  <div *ngIf="erro" class="error-message">
+    <h3>❌ Erro ao carregar hotéis</h3>
+    <p>{{ erro }}</p>
+    <button (click)="recarregar()" class="btn-retry">🔄 Tentar Novamente</button>
+  </div>
+
+  <div *ngIf="!carregando && !erro && hoteis.length === 0" class="no-hotels">
+    <h3>🏨 Nenhum hotel cadastrado</h3>
+    <p>Você ainda não cadastrou nenhum hotel no sistema.</p>
+    <a routerLink="/admin" class="btn btn-primary">➕ Cadastrar Primeiro Hotel</a>
+  </div>
+
+  <div class="hotel-grid" *ngIf="!carregando && hoteis.length > 0">
+    <div *ngFor="let hotel of hoteis" class="hotel-card">
+      <img 
+        [src]="hotel.fotos[0] || 'assets/images/default-hotel.jpg'" 
+        [alt]="hotel.nome"
+        class="hotel-image"
+        (error)="handleImageError($event)"
+      >
+      <div class="hotel-info">
+        <h3>{{ hotel.nome }}</h3>
+        <div class="stars">
+          <span *ngFor="let star of [1,2,3,4,5]">
+            {{ star <= hotel.estrelas ? '⭐' : '☆' }}
+          </span>
+        </div>
+        <p class="location">📍 {{ hotel.cidade }}, {{ hotel.estado }}</p>
+        <p class="price">R$ {{ hotel.precoMedio }}/noite</p>
+        <div class="amenities">
+          <span *ngFor="let comodidade of hotel.comodidades.slice(0, 3)" 
+                class="amenity-tag">
+            {{ comodidade }}
+          </span>
+          <span *ngIf="hotel.comodidades.length > 3" class="amenity-more">
+            +{{ hotel.comodidades.length - 3 }} mais
+          </span>
+        </div>
+        <a [routerLink]="['/view', hotel.id]" class="btn btn-primary">
+          🔍 Ver Detalhes
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

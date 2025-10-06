@@ -1,0 +1,363 @@
+<div class="admin-container">
+  <header class="admin-header">
+    <div class="header-content">
+      <h1>🏨 Painel Admin Rotas de Manacá</h1>
+      <p>Cadastre e gerencie os hotéis do sistema</p>
+    </div>
+  </header>
+
+  <div class="admin-content">
+    <form (ngSubmit)="salvarHotel()" class="hotel-form" #hotelForm="ngForm">
+      <div class="form-header">
+        <h2>➕ Cadastrar Novo Hotel</h2>
+        <div class="form-steps">
+          <span class="step active">1. Informações Básicas</span>
+          <span class="step">2. Detalhes</span>
+          <span class="step">3. Comodidades & Fotos</span>
+        </div>
+      </div>
+      
+      <!-- Seção 1: Informações Básicas -->
+      <div class="form-section">
+        <h3>📋 Informações Básicas</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nome">
+              <span class="icon">🏷️</span>
+              Nome do Hotel *
+            </label>
+            <input 
+              type="text" 
+              id="nome" 
+              [(ngModel)]="novoHotel.nome" 
+              name="nome"
+              required
+              placeholder="Ex: Hotel Praia Mar Resort"
+              class="form-input"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="estrelas">
+              <span class="icon">⭐</span>
+              Classificação *
+            </label>
+            <select 
+              id="estrelas" 
+              [(ngModel)]="novoHotel.estrelas" 
+              name="estrelas"
+              required
+              class="form-select"
+            >
+              <option value="1">⭐ 1 Estrela</option>
+              <option value="2">⭐⭐ 2 Estrelas</option>
+              <option value="3" selected>⭐⭐⭐ 3 Estrelas</option>
+              <option value="4">⭐⭐⭐⭐ 4 Estrelas</option>
+              <option value="5">⭐⭐⭐⭐⭐ 5 Estrelas</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="precoMedio">
+              <span class="icon">💰</span>
+              Preço Médio (R$) *
+            </label>
+            <input 
+              type="number" 
+              id="precoMedio" 
+              [(ngModel)]="novoHotel.precoMedio" 
+              name="precoMedio"
+              required
+              min="0"
+              step="10"
+              placeholder="250"
+              class="form-input"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="email">
+              <span class="icon">📧</span>
+              Email *
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              [(ngModel)]="novoHotel.email" 
+              name="email"
+              required
+              placeholder="contato@hotel.com"
+              class="form-input"
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção 2: Localização e Contato -->
+      <div class="form-section">
+        <h3>📍 Localização e Contato</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="endereco">
+              <span class="icon">🏠</span>
+              Endereço *
+            </label>
+            <input 
+              type="text" 
+              id="endereco" 
+              [(ngModel)]="novoHotel.endereco" 
+              name="endereco"
+              required
+              placeholder="Av. Principal, 123"
+              class="form-input"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="cidade">
+              <span class="icon">🏙️</span>
+              Cidade *
+            </label>
+            <input 
+              type="text" 
+              id="cidade" 
+              [(ngModel)]="novoHotel.cidade" 
+              name="cidade"
+              required
+              placeholder="São Paulo"
+              class="form-input"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="estado">
+              <span class="icon">🗺️</span>
+              Estado *
+            </label>
+            <input 
+              type="text" 
+              id="estado" 
+              [(ngModel)]="novoHotel.estado" 
+              name="estado"
+              required
+              maxlength="2"
+              placeholder="SP"
+              class="form-input"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="cep">
+              <span class="icon">📮</span>
+              CEP *
+            </label>
+            <input 
+              type="text" 
+              id="cep" 
+              [(ngModel)]="novoHotel.cep" 
+              name="cep"
+              required
+              placeholder="01234-567"
+              class="form-input"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="telefone">
+              <span class="icon">📞</span>
+              Telefone *
+            </label>
+            <input 
+              type="tel" 
+              id="telefone" 
+              [(ngModel)]="novoHotel.telefone" 
+              name="telefone"
+              required
+              placeholder="(11) 99999-9999"
+              class="form-input"
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção 3: Descrição -->
+      <div class="form-section">
+        <h3>📝 Descrição do Hotel</h3>
+        <div class="form-group full-width">
+          <label for="descricao">
+            <span class="icon">✏️</span>
+            Descrição Detalhada *
+          </label>
+          <textarea 
+            id="descricao" 
+            [(ngModel)]="novoHotel.descricao" 
+            name="descricao"
+            required
+            rows="6"
+            placeholder="Descreva as características únicas do hotel, localização, serviços oferecidos, atmosfera..."
+            class="form-textarea"
+          ></textarea>
+          <div class="char-count">{{ novoHotel.descricao.length }}/500</div>
+        </div>
+      </div>
+
+      <!-- Seção 4: Comodidades -->
+      <div class="form-section">
+        <h3>🎯 Comodidades</h3>
+        <div class="section-description">
+          <p>Adicione as comodidades e serviços oferecidos pelo hotel</p>
+        </div>
+        <div class="input-group">
+          <input 
+            type="text" 
+            [(ngModel)]="comodidadeInput" 
+            name="comodidadeInput"
+            placeholder="Ex: Piscina, Wi-Fi Gratuito, Estacionamento, Academia..."
+            class="comodidade-input"
+            (keyup.enter)="adicionarComodidade(); $event.preventDefault()"
+          >
+          <button type="button" (click)="adicionarComodidade()" class="btn-add">
+            <span class="btn-icon">+</span>
+            Adicionar
+          </button>
+        </div>
+        
+        <div class="tags-container" *ngIf="novoHotel.comodidades.length > 0">
+          <div *ngFor="let comodidade of novoHotel.comodidades; let i = index" class="tag">
+            <span class="tag-icon">✓</span>
+            {{ comodidade }}
+            <button type="button" (click)="removerComodidade(i)" class="btn-remove" title="Remover">
+              ×
+            </button>
+          </div>
+        </div>
+        <div *ngIf="novoHotel.comodidades.length === 0" class="empty-state">
+          <span class="empty-icon">📋</span>
+          <p>Nenhuma comodidade adicionada ainda</p>
+        </div>
+      </div>
+
+      <!-- Seção 5: Fotos - AGORA COM UPLOAD -->
+      <div class="form-section">
+        <h3>📸 Fotos do Hotel</h3>
+        <div class="section-description">
+          <p>Adicione fotos do hotel através de URLs ou faça upload de imagens</p>
+        </div>
+
+        <!-- Opção 1: Upload de Arquivos -->
+        <div class="upload-section">
+          <h4>📁 Upload de Imagens</h4>
+          <div class="upload-area" (click)="fileInput.click()" (drop)="onFileDrop($event)" 
+               (dragover)="onDragOver($event)" [class.drag-over]="isDragOver">
+            <div class="upload-content">
+              <span class="upload-icon">📁</span>
+              <h5>Arraste e solte imagens aqui</h5>
+              <p>ou clique para selecionar arquivos</p>
+              <small>Formatos: JPG, PNG, WebP (Máx. 5MB cada)</small>
+            </div>
+            <input #fileInput type="file" (change)="onFileSelected($event)" multiple 
+                   accept="image/*" class="file-input" hidden>
+          </div>
+          <div class="upload-actions">
+            <button type="button" (click)="fileInput.click()" class="btn-upload">
+              <span class="btn-icon">🖼️</span>
+              Selecionar Imagens
+            </button>
+            <span class="file-info">{{ selectedFiles.length }} arquivo(s) selecionado(s)</span>
+          </div>
+        </div>
+
+        <!-- Opção 2: URL de Imagem -->
+        <div class="url-section">
+          <h4>🔗 Ou adicione por URL</h4>
+          <div class="input-group">
+            <input 
+              type="url" 
+              [(ngModel)]="fotoInput" 
+              name="fotoInput"
+              placeholder="https://exemplo.com/foto-do-hotel.jpg"
+              class="foto-input"
+              (keyup.enter)="adicionarFoto(); $event.preventDefault()"
+            >
+            <button type="button" (click)="adicionarFoto()" class="btn-add">
+              <span class="btn-icon">🔗</span>
+              Adicionar URL
+            </button>
+          </div>
+        </div>
+        
+        <!-- Preview das Fotos -->
+        <div class="photos-preview" *ngIf="novoHotel.fotos.length > 0 || uploadedImages.length > 0">
+          <!-- Fotos por URL -->
+          <div *ngFor="let foto of novoHotel.fotos; let i = index" class="photo-item">
+            <img [src]="foto" alt="Preview da foto {{ i + 1 }}" class="photo-preview" 
+                 (error)="handleImageError($event)">
+            <div class="photo-info">
+              <span class="photo-type">URL</span>
+            </div>
+            <div class="photo-actions">
+              <button type="button" (click)="removerFoto(i)" class="btn-remove-photo">
+                🗑️ Remover
+              </button>
+            </div>
+          </div>
+
+          <!-- Fotos Uploaded -->
+          <div *ngFor="let image of uploadedImages; let i = index" class="photo-item">
+            <img [src]="image.url" alt="Uploaded image {{ i + 1 }}" class="photo-preview">
+            <div class="photo-info">
+              <span class="photo-type">UPLOAD</span>
+              <span class="photo-size">{{ image.size }}</span>
+            </div>
+            <div class="photo-actions">
+              <button type="button" (click)="removerUploadedImage(i)" class="btn-remove-photo">
+                🗑️ Remover
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="novoHotel.fotos.length === 0 && uploadedImages.length === 0" class="empty-state">
+          <span class="empty-icon">📷</span>
+          <p>Nenhuma foto adicionada ainda</p>
+          <small>Adicione fotos por upload ou URL para melhor apresentação do hotel</small>
+        </div>
+      </div>
+
+      <!-- Ações do Formulário -->
+      <div class="form-actions">
+        <div class="action-buttons">
+          <button type="submit" class="btn-primary" [disabled]="!novoHotel.nome || !novoHotel.descricao">
+            <span class="btn-icon">💾</span>
+            Cadastrar Hotel
+          </button>
+          <button type="button" (click)="limparFormulario()" class="btn-secondary">
+            <span class="btn-icon">🔄</span>
+            Limpar Tudo
+          </button>
+        </div>
+        
+        <div class="form-summary" *ngIf="novoHotel.nome">
+          <h4>📊 Resumo do Cadastro:</h4>
+          <p><strong>Hotel:</strong> {{ novoHotel.nome }}</p>
+          <p><strong>Comodidades:</strong> {{ novoHotel.comodidades.length }} itens</p>
+          <p><strong>Fotos URLs:</strong> {{ novoHotel.fotos.length }} imagens</p>
+          <p><strong>Fotos Uploaded:</strong> {{ uploadedImages.length }} imagens</p>
+          <p><strong>Total de Fotos:</strong> {{ novoHotel.fotos.length + uploadedImages.length }}</p>
+        </div>
+      </div>
+	<!-- Mensagens de status -->
+	<div *ngIf="mensagemSucesso" class="mensagem-sucesso">
+ 	 {{ mensagemSucesso }}
+	</div>
+
+	<div *ngIf="mensagemErro" class="mensagem-erro">
+ 	 {{ mensagemErro }}
+	</div>
+
+	<div *ngIf="salvando" class="carregando">
+ 	 ⏳ Salvando hotel...
+	</div>
+    </form>
+  </div>
+</div>

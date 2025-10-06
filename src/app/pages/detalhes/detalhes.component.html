@@ -1,0 +1,63 @@
+<div class="container" *ngIf="!carregando && hotel">
+  <a routerLink="/" class="back-link">← Voltar para a lista</a>
+  
+  <div class="hotel-details">
+    <div class="gallery">
+      <img [src]="fotoPrincipal" [alt]="hotel.nome" class="main-image">
+      <div class="thumbnails">
+        <img 
+          *ngFor="let foto of hotel.fotos" 
+          [src]="foto" 
+          [alt]="hotel.nome"
+          (click)="alterarFotoPrincipal(foto)"
+          class="thumbnail"
+        >
+      </div>
+    </div>
+
+    <div class="hotel-content">
+      <h1>{{ hotel.nome }}</h1>
+      <div class="stars">
+        <span *ngFor="let star of [1,2,3,4,5]">
+          {{ star <= hotel.estrelas ? '★' : '☆' }}
+        </span>
+        <span class="rating">{{ hotel.estrelas }} estrelas</span>
+      </div>
+
+      <p class="location">📍 {{ hotel.endereco }}, {{ hotel.cidade }} - {{ hotel.estado }}</p>
+      
+      <div class="contact-info">
+        <p>📞 {{ hotel.telefone }}</p>
+        <p>✉️ {{ hotel.email }}</p>
+      </div>
+
+      <div class="description">
+        <h3>Sobre o hotel</h3>
+        <p>{{ hotel.descricao }}</p>
+      </div>
+
+      <div class="amenities">
+        <h3>Comodidades</h3>
+        <div class="amenities-grid">
+          <span *ngFor="let comodidade of hotel.comodidades" class="amenity">
+            {{ comodidade }}
+          </span>
+        </div>
+      </div>
+
+      <div class="price-section">
+        <h3>Preço médio</h3>
+        <p class="price">R$ {{ hotel.precoMedio }} / noite</p>
+        <button class="btn btn-primary">Reservar Agora</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="carregando" class="loading">
+  Carregando detalhes do hotel...
+</div>
+
+<div *ngIf="!carregando && !hotel" class="error">
+  Hotel não encontrado.
+</div>

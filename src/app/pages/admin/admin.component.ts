@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HotelService } from '../../services/hotel.service';
-import { HotelCreate } from '../../types/hotel.model';
+import { HotelService } from '../../services/room.service';
+import { HotelCreate } from '../../types/room.model';
 
 interface UploadedImage {
   file: File;

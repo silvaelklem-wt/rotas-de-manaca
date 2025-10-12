@@ -1,63 +1,83 @@
-<div class="container" *ngIf="!carregando && hotel">
-  <a routerLink="/" class="back-link">← Voltar para a lista</a>
+<div class="container" *ngIf="!carregando && quarto">
+  <a routerLink="/quartos" class="back-link">← Voltar para os quartos</a>
   
-  <div class="hotel-details">
+  <div class="room-details">
     <div class="gallery">
-      <img [src]="fotoPrincipal" [alt]="hotel.nome" class="main-image">
+      <img [src]="fotoPrincipal" [alt]="'Quarto ' + quarto.numero" class="main-image" (error)="handleImageError($event)">
       <div class="thumbnails">
         <img 
-          *ngFor="let foto of hotel.fotos" 
+          *ngFor="let foto of quarto.fotos" 
           [src]="foto" 
-          [alt]="hotel.nome"
+          [alt]="'Quarto ' + quarto.numero"
           (click)="alterarFotoPrincipal(foto)"
           class="thumbnail"
+          (error)="handleImageError($event)"
         >
       </div>
     </div>
 
-    <div class="hotel-content">
-      <h1>{{ hotel.nome }}</h1>
-      <div class="stars">
-        <span *ngFor="let star of [1,2,3,4,5]">
-          {{ star <= hotel.estrelas ? '★' : '☆' }}
-        </span>
-        <span class="rating">{{ hotel.estrelas }} estrelas</span>
+    <div class="room-content">
+      <div class="room-header">
+        <h1>Quarto {{ quarto.numero }}</h1>
+        <span class="room-type-badge">{{ quarto.tipo }}</span>
       </div>
 
-      <p class="location">📍 {{ hotel.endereco }}, {{ hotel.cidade }} - {{ hotel.estado }}</p>
-      
-      <div class="contact-info">
-        <p>📞 {{ hotel.telefone }}</p>
-        <p>✉️ {{ hotel.email }}</p>
+      <div class="availability" [class.available]="quarto.disponivel" [class.unavailable]="!quarto.disponivel">
+        {{ quarto.disponivel ? '✅ Disponível para reserva' : '🚫 Indisponível' }}
       </div>
 
-      <div class="description">
-        <h3>Sobre o hotel</h3>
-        <p>{{ hotel.descricao }}</p>
+      <p class="room-description">{{ quarto.descricao }}</p>
+
+      <div class="room-features">
+        <div class="feature">
+          <span class="feature-icon">👥</span>
+          <div class="feature-info">
+            <strong>Capacidade</strong>
+            <span>Até {{ quarto.capacidade }} pessoa{{ quarto.capacidade > 1 ? 's' : '' }}</span>
+          </div>
+        </div>
+        
+        <div class="feature">
+          <span class="feature-icon">💰</span>
+          <div class="feature-info">
+            <strong>Preço por noite</strong>
+            <span class="price">R$ {{ quarto.preco }}</span>
+          </div>
+        </div>
       </div>
 
-      <div class="amenities">
-        <h3>Comodidades</h3>
+      <div class="amenities-section">
+        <h3>🏆 Comodidades do Quarto</h3>
         <div class="amenities-grid">
-          <span *ngFor="let comodidade of hotel.comodidades" class="amenity">
+          <span *ngFor="let comodidade of quarto.comodidades" class="amenity">
             {{ comodidade }}
           </span>
         </div>
       </div>
 
-      <div class="price-section">
-        <h3>Preço médio</h3>
-        <p class="price">R$ {{ hotel.precoMedio }} / noite</p>
-        <button class="btn btn-primary">Reservar Agora</button>
+      <div class="booking-section">
+        <h3>📅 Reservar Este Quarto</h3>
+        <div class="booking-info">
+          <p class="price-large">R$ {{ quarto.preco }} <small>/noite</small></p>
+          <button class="btn btn-primary" [disabled]="!quarto.disponivel">
+            {{ quarto.disponivel ? '🛎️ Fazer Reserva' : 'Quarto Indisponível' }}
+          </button>
+          <p class="booking-note" *ngIf="quarto.disponivel">
+            ✅ Reserve agora e garante sua estadia
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div *ngIf="carregando" class="loading">
-  Carregando detalhes do hotel...
+  <div class="spinner"></div>
+  <p>Carregando detalhes do quarto...</p>
 </div>
 
-<div *ngIf="!carregando && !hotel" class="error">
-  Hotel não encontrado.
+<div *ngIf="!carregando && !quarto" class="error">
+  <h3>❌ Quarto não encontrado</h3>
+  <p>O quarto que você está procurando não existe ou foi removido.</p>
+  <a routerLink="/quartos" class="btn btn-secondary">Voltar para os quartos</a>
 </div>

@@ -1,58 +1,69 @@
 <div class="container">
-  <h1>🏨 Nossos Hotéis</h1>
-  
-  <div class="status-bar">
-    <button (click)="recarregar()" class="btn-reload">🔄 Atualizar</button>
-    <span class="hotel-count">{{ hoteis.length }} hotéis encontrados</span>
+  <div class="page-header">
+    <h1>🛏️ Nossos Quartos</h1>
+    <p>Conheça nossas acomodações cuidadosamente preparadas para seu conforto</p>
   </div>
-  
+
   <div *ngIf="carregando" class="loading">
     <div class="spinner"></div>
-    <p>Carregando hotéis...</p>
+    <p>Carregando quartos...</p>
   </div>
 
   <div *ngIf="erro" class="error-message">
-    <h3>❌ Erro ao carregar hotéis</h3>
+    <h3>❌ Erro ao carregar quartos</h3>
     <p>{{ erro }}</p>
-    <button (click)="recarregar()" class="btn-retry">🔄 Tentar Novamente</button>
   </div>
 
-  <div *ngIf="!carregando && !erro && hoteis.length === 0" class="no-hotels">
-    <h3>🏨 Nenhum hotel cadastrado</h3>
-    <p>Você ainda não cadastrou nenhum hotel no sistema.</p>
-    <a routerLink="/admin" class="btn btn-primary">➕ Cadastrar Primeiro Hotel</a>
-  </div>
-
-  <div class="hotel-grid" *ngIf="!carregando && hoteis.length > 0">
-    <div *ngFor="let hotel of hoteis" class="hotel-card">
+  <div class="hotel-grid" *ngIf="!carregando && quartos.length > 0">
+    <div *ngFor="let quarto of quartos" class="hotel-card" [class.destaque]="quarto.destaque">
+      <div class="card-badge" *ngIf="quarto.destaque">⭐ Destaque</div>
+      <div class="card-badge disponibilidade" *ngIf="!quarto.disponivel">🚫 Indisponível</div>
+      
       <img 
-        [src]="hotel.fotos[0] || 'assets/images/default-hotel.jpg'" 
-        [alt]="hotel.nome"
+        [src]="quarto.fotos[0]" 
+        [alt]="'Quarto ' + quarto.numero"
         class="hotel-image"
         (error)="handleImageError($event)"
       >
+      
       <div class="hotel-info">
-        <h3>{{ hotel.nome }}</h3>
-        <div class="stars">
-          <span *ngFor="let star of [1,2,3,4,5]">
-            {{ star <= hotel.estrelas ? '⭐' : '☆' }}
-          </span>
+        <div class="room-header">
+          <h3>Quarto {{ quarto.numero }}</h3>
+          <span class="room-type">{{ quarto.tipo }}</span>
         </div>
-        <p class="location">📍 {{ hotel.cidade }}, {{ hotel.estado }}</p>
-        <p class="price">R$ {{ hotel.precoMedio }}/noite</p>
+        
+        <p class="room-description">{{ quarto.descricao }}</p>
+        
+        <div class="room-details">
+          <div class="detail">
+            <span class="detail-icon">👥</span>
+            <span>Até {{ quarto.capacidade }} pessoa{{ quarto.capacidade > 1 ? 's' : '' }}</span>
+          </div>
+          <div class="detail">
+            <span class="detail-icon">💰</span>
+            <span class="price">R$ {{ quarto.preco }}/noite</span>
+          </div>
+        </div>
+
         <div class="amenities">
-          <span *ngFor="let comodidade of hotel.comodidades.slice(0, 3)" 
+          <span *ngFor="let comodidade of quarto.comodidades.slice(0, 3)" 
                 class="amenity-tag">
             {{ comodidade }}
           </span>
-          <span *ngIf="hotel.comodidades.length > 3" class="amenity-more">
-            +{{ hotel.comodidades.length - 3 }} mais
+          <span *ngIf="quarto.comodidades.length > 3" class="amenity-more">
+            +{{ quarto.comodidades.length - 3 }} mais
           </span>
         </div>
-        <a [routerLink]="['/view', hotel.id]" class="btn btn-primary">
-          🔍 Ver Detalhes
-        </a>
+
+        <button class="btn btn-primary" [disabled]="!quarto.disponivel">
+          {{ quarto.disponivel ? '🛎️ Reservar Agora' : 'Indisponível' }}
+        </button>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="!carregando && quartos.length === 0" class="no-hotels">
+    <h3>🏨 Nenhum quarto cadastrado</h3>
+    <p>Em breve teremos nossas acomodações disponíveis para reserva.</p>
   </div>
 </div>

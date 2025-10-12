@@ -1,0 +1,132 @@
+<footer class="footer">
+  <!-- Seção Principal do Footer -->
+  <div class="footer-main">
+    <div class="container">
+      <div class="footer-content">
+        
+        <!-- Coluna Logo e Informações -->
+        <div class="footer-column logo-column">
+          <div class="footer-logo">
+            <div class="logo-icon">🏨</div>
+            <div class="logo-text">
+              <span class="logo-title">Rotas de Manacá</span>
+              <span class="logo-subtitle">Encontre experiências únicas</span>
+            </div>
+          </div>
+          
+          <p class="footer-description">
+            Conectamos viajantes aos melhores hotéis e experiências de Manacapuru. Sua visita perfeita começa aqui.
+          </p>
+          
+          <!-- Informações de Contato -->
+          <div class="contact-info">
+            <div class="contact-item">
+              <span class="contact-icon">📞</span>
+              <span>{{ contactInfo.phone }}</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">✉️</span>
+              <span>{{ contactInfo.email }}</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📍</span>
+              <span>{{ contactInfo.address }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Links por Categoria -->
+        <div class="footer-columns">
+          <div *ngFor="let section of footerSections" class="footer-column">
+            <h4 class="footer-title">{{ section.title }}</h4>
+            <ul class="footer-links">
+              <li *ngFor="let link of section.links">
+                <a [routerLink]="link.path" class="footer-link">{{ link.label }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Coluna Apps e Newsletter -->
+        <div class="footer-column apps-column">
+          <div class="apps-section">
+            <p class="apps-description">Reserve hotéis com facilidade pelo celular</p>
+            <div class="app-stores">
+              <a *ngFor="let store of appStores" [href]="store.url" class="app-store">
+                <span class="store-icon">{{ store.icon }}</span>
+                <div class="store-info">
+                  <span class="store-name">{{ store.name }}</span>
+                  <span class="store-description">{{ store.description }}</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Newsletter -->
+          <div class="newsletter-section">
+            <h4 class="footer-title">📧 Newsletter</h4>
+            <p class="newsletter-description">Receba ofertas exclusivas por email</p>
+            <div class="newsletter-form">
+              <input type="email" placeholder="Seu melhor email" class="newsletter-input">
+              <button class="newsletter-btn">Inscrever</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seção Inferior do Footer -->
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="footer-bottom-content">
+        
+        <!-- Direitos Autorais -->
+        <div class="copyright">
+          <p>&copy; {{ currentYear }} HotelFind. Todos os direitos reservados.</p>
+        </div>
+
+        <!-- Métodos de Pagamento -->
+        <div class="payment-methods">
+          <span class="payment-label">Métodos de pagamento:</span>
+          <div class="payment-icons">
+            <span *ngFor="let method of paymentMethods" class="payment-icon">
+              {{ method }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Links Sociais -->
+        <div class="social-links">
+          <span class="social-label">Siga-nos:</span>
+          <div class="social-icons">
+            <a *ngFor="let social of socialLinks" 
+               [href]="social.url" 
+               class="social-icon"
+               [title]="social.name">
+              {{ social.icon }}
+            </a>
+          </div>
+        </div>
+
+        <!-- Selos de Segurança -->
+        <div class="security-badges">
+          <div class="badge">🔒 Site Seguro</div>
+          <div class="badge">⭐ 4.9/5 Avaliação</div>
+          <div class="badge">🏆 Prêmio Excelência</div>
+        </div>
+      </div>
+
+      <!-- Links Legais -->
+      <div class="legal-links">
+        <a href="/termos" class="legal-link">Termos de Uso</a>
+        <span class="separator">•</span>
+        <a href="/privacidade" class="legal-link">Política de Privacidade</a>
+        <span class="separator">•</span>
+        <a href="/cookies" class="legal-link">Política de Cookies</a>
+        <span class="separator">•</span>
+        <a href="/lgpd" class="legal-link">LGPD</a>
+      </div>
+    </div>
+  </div>
+</footer>
